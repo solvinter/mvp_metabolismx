@@ -47,6 +47,20 @@ a {
 a:hover {
     border-bottom: 1px solid rgba(255,255,255,0.8);
 }
+
+.btn {
+  display: inline-block;
+  padding: 10px 14px;
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 10px;
+  text-decoration: none;
+  background: rgba(255,255,255,0.04);
+}
+
+.btn:hover {
+  border-color: rgba(255,255,255,0.7);
+  background: rgba(255,255,255,0.07);
+}
 </style>
 </head>
 
@@ -118,10 +132,50 @@ Om du känner igen dig i detta
 </p>
 
 <div class="footer">
-Kontakt: <a href="mailto:dinmail@exempel.se">dinmail@exempel.se</a>
+  <p>
+    <a href="mailto:1o4k8p@gmail.com?subject=MetabolismX%20%E2%80%94%20kontakt&body=Hej%20Dominic%2C%0A%0AJag%20vill%20h%C3%B6ra%20mer%20om%20MetabolismX.%0A%0A1%29%20Vad%20vill%20jag%20uppn%C3%A5%20%281%20mening%29%3A%0A2%29%20Kort%20bakgrund%20%283%20rader%29%3A%0A3%29%20%C3%85lder%2Fk%C3%B6n%20%28valfritt%29%3A%0A4%29%20Ev%20provsvar%20%2F%20l%C3%A4kemedel%20%28valfritt%29%3A%0A">
+      Kontakt: 1o4k8p@gmail.com
+    </a>
+  </p>
+
+  <p style="margin-top: 14px;">
+    <a class="btn" href="mailto:1o4k8p@gmail.com?subject=MetabolismX%20%E2%80%94%20kontakt&body=Hej%20Dominic%2C%0A%0AJag%20vill%20h%C3%B6ra%20mer%20om%20MetabolismX.%0A%0A1%29%20Vad%20vill%20jag%20uppn%C3%A5%20%281%20mening%29%3A%0A2%29%20Kort%20bakgrund%20%283%20rader%29%3A%0A3%29%20%C3%85lder%2Fk%C3%B6n%20%28valfritt%29%3A%0A4%29%20Ev%20provsvar%20%2F%20l%C3%A4kemedel%20%28valfritt%29%3A%0A">
+      Skriv till mig
+    </a>
+  </p>
+
+  <p style="margin-top: 14px; opacity: 0.85;">
+    <span id="email">1o4k8p@gmail.com</span>
+    <span style="opacity: 0.6;"> · </span>
+    <a href="#" id="copy-email">Kopiera</a>
+  </p>
 </div>
 
 </div>
+
+<script>
+  const copy = document.getElementById("copy-email");
+  const email = document.getElementById("email")?.textContent?.trim() || "1o4k8p@gmail.com";
+  copy?.addEventListener("click", async (e) => {
+    e.preventDefault();
+    try {
+      await navigator.clipboard.writeText(email);
+      copy.textContent = "Kopierat";
+      setTimeout(() => (copy.textContent = "Kopiera"), 1200);
+    } catch {
+      // fallback: markera text (gammal safari etc)
+      const range = document.createRange();
+      const node = document.getElementById("email");
+      if (!node) return;
+      range.selectNodeContents(node);
+      const sel = window.getSelection();
+      sel?.removeAllRanges();
+      sel?.addRange(range);
+      copy.textContent = "Markera & kopiera";
+      setTimeout(() => (copy.textContent = "Kopiera"), 1500);
+    }
+  });
+</script>
 
 </body>
 </html>
