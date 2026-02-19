@@ -1,382 +1,181 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Ælab</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ælab</title>
 
 <style>
-  :root{
-    --bg:#0f1115;
-    --fg:#e6e6e6;
-    --muted:rgba(255,255,255,0.72);
-    --hair:rgba(255,255,255,0.16);
-    --hair2:rgba(255,255,255,0.28);
-    --glass:rgba(255,255,255,0.05);
-    --glass2:rgba(255,255,255,0.08);
-    --teal:#1dd3b0;
-    --blue:#2ea8ff;
-    --amber:#ffb347;
-  }
+:root {
+  --bg:#0c0f14;
+  --fg:#e6f4f3;
+  --teal:#1dd3b0;
+  --blue:#2ea8ff;
+  --amber:#ffb347;
+}
 
-  body{
-    margin:0;
-    background:
-      radial-gradient(circle at 18% 18%, rgba(46,168,255,0.14), transparent 40%),
-      radial-gradient(circle at 82% 26%, rgba(29,211,176,0.12), transparent 42%),
-      radial-gradient(circle at 55% 92%, rgba(255,179,71,0.10), transparent 45%),
-      var(--bg);
-    color:var(--fg);
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    line-height:1.7;
-    overflow-x:hidden;
-  }
+body {
+  margin:0;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(46,168,255,0.12), transparent 40%),
+    radial-gradient(circle at 80% 40%, rgba(29,211,176,0.12), transparent 45%),
+    radial-gradient(circle at 50% 85%, rgba(255,179,71,0.08), transparent 45%),
+    var(--bg);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color:var(--fg);
+  overflow:hidden;
+}
 
-  .container{
-    max-width:980px;
-    margin:70px auto 90px;
-    padding:0 22px;
-  }
+h1 {
+  position:fixed;
+  top:40px;
+  left:50%;
+  transform:translateX(-50%);
+  font-weight:400;
+  letter-spacing:1px;
+  font-size:1.4rem;
+  opacity:0.6;
+}
 
-  header{
-    display:flex;
-    align-items:flex-end;
-    justify-content:space-between;
-    gap:18px;
-    margin-bottom:34px;
-  }
+.bubble {
+  position:absolute;
+  width:220px;
+  height:220px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  backdrop-filter:blur(10px);
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,0.12), transparent 55%),
+    rgba(255,255,255,0.03);
+  transition:all .4s ease;
+}
 
-  h1{
-    margin:0;
-    font-weight:420;
-    letter-spacing:0.4px;
-    font-size:2.1rem;
-  }
+.bubble:hover {
+  transform:scale(1.05);
+}
 
-  .tagline{
-    margin:0;
-    color:var(--muted);
-    font-size:1rem;
-  }
+.bubble span {
+  text-transform:uppercase;
+  letter-spacing:0.15em;
+  font-size:0.9rem;
+  color:var(--amber);
+}
 
-  .mini{
-    font-size:0.92rem;
-    color:rgba(255,255,255,0.62);
-    white-space:nowrap;
-  }
+.b1 { left:15%; top:25%; }
+.b2 { right:15%; top:20%; }
+.b3 { left:25%; bottom:15%; }
+.b4 { right:20%; bottom:20%; }
 
-  .mini a{
-    color:rgba(255,255,255,0.72);
-    text-decoration:none;
-    border-bottom:1px solid rgba(255,255,255,0.22);
-  }
-  .mini a:hover{ border-bottom-color:rgba(255,255,255,0.65); }
+/* Overlay */
 
-  .stage{
-    display:grid;
-    grid-template-columns: 1.1fr 0.9fr;
-    gap:34px;
-    align-items:start;
-  }
+.overlay {
+  position:fixed;
+  inset:0;
+  background:rgba(12,15,20,0.92);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:40px;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .4s ease;
+}
 
-  /* Bubble field */
-  .bubbleField{
-    min-height:520px;
-    border:1px solid var(--hair);
-    border-radius:18px;
-    background:rgba(255,255,255,0.02);
-    position:relative;
-    overflow:hidden;
-  }
+.overlay.active {
+  opacity:1;
+  pointer-events:auto;
+}
 
-  .bubbleField::before{
-    content:"";
-    position:absolute; inset:-40px;
-    background:
-      radial-gradient(circle at 20% 30%, rgba(255,255,255,0.06), transparent 45%),
-      radial-gradient(circle at 70% 35%, rgba(255,255,255,0.04), transparent 45%),
-      radial-gradient(circle at 50% 85%, rgba(255,255,255,0.03), transparent 55%);
-    filter: blur(10px);
-    pointer-events:none;
-  }
+.overlay-content {
+  max-width:700px;
+  line-height:1.8;
+}
 
-  .bubble{
-    width:220px; height:220px;
-    border-radius:50%;
-    position:absolute;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    text-decoration:none;
-    color:var(--fg);
-    border:1px solid rgba(255,255,255,0.16);
-    background:
-      radial-gradient(circle at 28% 28%, rgba(255,255,255,0.10), transparent 55%),
-      radial-gradient(circle at 65% 70%, rgba(255,255,255,0.06), transparent 55%),
-      rgba(255,255,255,0.03);
-    backdrop-filter: blur(8px);
-    box-shadow:
-      0 18px 50px rgba(0,0,0,0.35),
-      0 0 40px rgba(46,168,255,0.10);
-    transition: transform 240ms ease, box-shadow 240ms ease, border-color 240ms ease;
-    cursor:pointer;
-    user-select:none;
-  }
+.close {
+  position:absolute;
+  top:40px;
+  right:50px;
+  cursor:pointer;
+  opacity:0.6;
+}
 
-  .bubble:hover{
-    transform: translateY(-4px) scale(1.02);
-    border-color: rgba(255,255,255,0.34);
-    box-shadow:
-      0 22px 60px rgba(0,0,0,0.38),
-      0 0 60px rgba(29,211,176,0.14);
-  }
+.close:hover { opacity:1; }
 
-  .bubble:active{
-    transform: translateY(-1px) scale(0.99);
-  }
+a {
+  color:var(--teal);
+  text-decoration:none;
+}
 
-  .bubble .label{
-    font-weight:520;
-    letter-spacing:0.08em;
-    text-transform:uppercase;
-    font-size:0.95rem;
-    opacity:0.92;
-  }
-
-  /* bubble positions (desktop) */
-  .b1{ left:70px;  top:70px; }
-  .b2{ right:80px; top:90px; }
-  .b3{ left:150px; top:280px; }
-  .b4{ right:120px; top:310px; }
-
-  /* Info panel */
-  .panel{
-    border:1px solid var(--hair);
-    border-radius:18px;
-    background:rgba(255,255,255,0.02);
-    padding:18px 18px 16px;
-  }
-
-  .panel h2{
-    margin:2px 0 10px;
-    font-size:1.15rem;
-    font-weight:520;
-    letter-spacing:0.2px;
-  }
-
-  .panel p{
-    margin:0 0 14px;
-    color:var(--muted);
-    font-size:1.02rem;
-  }
-
-  .pillrow{
-    display:flex; flex-wrap:wrap;
-    gap:8px;
-    margin-top:10px;
-  }
-
-  .pill{
-    display:inline-block;
-    padding:7px 10px;
-    border:1px solid rgba(255,255,255,0.18);
-    border-radius:999px;
-    background:rgba(255,255,255,0.03);
-    font-size:0.92rem;
-    color:rgba(255,255,255,0.78);
-  }
-
-  .cta{
-    margin-top:14px;
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-    align-items:center;
-  }
-
-  .btn{
-    display:inline-block;
-    padding:10px 14px;
-    border:1px solid rgba(255,255,255,0.25);
-    border-radius:12px;
-    background:rgba(255,255,255,0.04);
-    text-decoration:none;
-    color:var(--fg);
-  }
-  .btn:hover{
-    border-color: rgba(255,255,255,0.65);
-    background: rgba(255,255,255,0.07);
-  }
-
-  .emailline{
-    margin-top:10px;
-    font-size:0.95rem;
-    opacity:0.85;
-  }
-
-  a.inline{
-    color:rgba(255,255,255,0.86);
-    text-decoration:none;
-    border-bottom:1px solid rgba(255,255,255,0.22);
-  }
-  a.inline:hover{ border-bottom-color:rgba(255,255,255,0.65); }
-
-  .footer{
-    margin-top:28px;
-    opacity:0.55;
-    font-size:0.9rem;
-  }
-
-  /* Mobile */
-  @media (max-width: 920px){
-    .stage{ grid-template-columns:1fr; }
-    .bubbleField{ min-height:560px; }
-    .b1{ left:30px; top:40px; }
-    .b2{ right:30px; top:80px; }
-    .b3{ left:30px; top:300px; }
-    .b4{ right:30px; top:340px; }
-  }
-
-  @media (max-width: 520px){
-    header{ flex-direction:column; align-items:flex-start; }
-    .bubble{ width:190px; height:190px; }
-    .bubbleField{ min-height:620px; }
-  }
 </style>
 </head>
 
 <body>
-  <div class="container">
-    <header>
-      <div>
-        <h1>Ælab</h1>
-        <p class="tagline">Pilot: strukturerad primär prevention med kontinuitet.</p>
-      </div>
-      <div class="mini">
-        <a href="mailto:hello@aelab.se?subject=%C3%86lab%20%E2%80%94%20f%C3%B6rfr%C3%A5gan">Kontakt</a>
-        <span style="opacity:.55;"> · </span>
-        <a href="https://metabolismx.se" target="_blank" rel="noopener">MetabolismX</a>
-      </div>
-    </header>
 
-    <div class="stage">
-      <!-- Left: bubbles -->
-      <div class="bubbleField" aria-label="Navigationsbubblor">
-        <div class="bubble b1" role="button" tabindex="0" data-panel="hur" aria-controls="panel" aria-label="Öppna Hur">
-          <div class="label">Hur</div>
-        </div>
-        <div class="bubble b2" role="button" tabindex="0" data-panel="vad" aria-controls="panel" aria-label="Öppna Vad">
-          <div class="label">Vad</div>
-        </div>
-        <div class="bubble b3" role="button" tabindex="0" data-panel="varfor" aria-controls="panel" aria-label="Öppna Varför">
-          <div class="label">Varför</div>
-        </div>
-        <a class="bubble b4" href="https://metabolismx.se" target="_blank" rel="noopener" aria-label="Öppna MetabolismX i ny flik">
-          <div class="label">MetabolismX</div>
-        </a>
-      </div>
+<h1>ælab</h1>
 
-      <!-- Right: panel -->
-      <section class="panel" id="panel" aria-live="polite">
-        <h2 id="panelTitle">Välj en bubbla</h2>
-        <p id="panelText">
-          Hur, Vad och Varför beskriver pilotupplägget. MetabolismX leder till webbversionen av boken/ramverket.
-        </p>
+<div class="bubble b1" onclick="openOverlay('hur')">
+  <span>Hur</span>
+</div>
 
-        <div class="pillrow" id="panelPills">
-          <span class="pill">Primär prevention</span>
-          <span class="pill">Metabol risk</span>
-          <span class="pill">Kontinuitet</span>
-          <span class="pill">Medicinskt ansvar</span>
-        </div>
+<div class="bubble b2" onclick="openOverlay('vad')">
+  <span>Vad</span>
+</div>
 
-        <div class="cta">
-          <a class="btn" href="mailto:hello@aelab.se?subject=%C3%86lab%20%E2%80%94%20f%C3%B6rfr%C3%A5gan&body=Hej%2C%0A%0AJag%20vill%20h%C3%B6ra%20mer%20om%20%C3%86lab.%0A%0A1)%20Vad%20vill%20jag%20uppn%C3%A5%20(1%20mening):%0A2)%20Kort%20bakgrund%20(3%20rader):%0A3)%20%C3%85lder/k%C3%B6n%20(valfritt):%0A4)%20Ev%20provsvar%20/%20l%C3%A4kemedel%20(valfritt):%0A">
-            Kontakta mig
-          </a>
-          <span class="emailline"><span id="email">hello@aelab.se</span> · <a class="inline" href="#" id="copy-email">Kopiera</a></span>
-        </div>
+<div class="bubble b3" onclick="openOverlay('varfor')">
+  <span>Varför</span>
+</div>
 
-        <div class="footer">© <span id="year"></span> Ælab</div>
-      </section>
-    </div>
+<a href="https://metabolismx.se" target="_blank">
+  <div class="bubble b4">
+    <span>MetabolismX</span>
   </div>
+</a>
+
+<div class="overlay" id="overlay">
+  <div class="close" onclick="closeOverlay()">stäng</div>
+  <div class="overlay-content" id="overlayContent"></div>
+</div>
 
 <script>
-  document.getElementById("year").textContent = new Date().getFullYear();
 
-  const content = {
-    hur: {
-      title: "Hur",
-      text:
-        "Vi börjar enkelt. Du beskriver mål och utgångsläge. Vi väljer en provtagningspanel utifrån frågeställning, och följer upp med en läkarkonsultation. Därefter sätts en plan och en rimlig uppföljningsrytm.",
-      pills: ["Stegvis", "Tydliga intervall", "Lågvolym", "Struktur"]
-    },
-    vad: {
-      title: "Vad",
-      text:
-        "Ælab är en pilot för strukturerad primär prevention med fokus på metabol och kardiovaskulär risk. Prover + tolkning + uppföljning, med medicinskt ansvar hos läkare.",
-      pills: ["Provtagningspaneler", "Tolkning", "Uppföljning", "Ansvar"]
-    },
-    varfor: {
-      title: "Varför",
-      text:
-        "Det finns ett mellanrum mellan att vara helt frisk och att kvalificera för en diagnos. Många vill förstå sina värden och fatta ansvarstagande beslut tidigare — men utan att behöva bära ansvaret ensamma.",
-      pills: ["Kontinuitet", "Pedagogik", "Risk över tid", "Individ"]
-    }
-  };
+const content = {
+  hur: `
+  <h2>Hur</h2>
+  <p>
+  Vi börjar med dina mål och din bakgrund.
+  Därefter väljs en provtagningspanel utifrån frågeställning.
+  Uppföljning sker strukturerat över tid.
+  </p>
+  `,
+  vad: `
+  <h2>Vad</h2>
+  <p>
+  Strukturerad primär prevention med fokus på metabol och kardiovaskulär risk.
+  Prover, tolkning och medicinskt ansvar.
+  </p>
+  `,
+  varfor: `
+  <h2>Varför</h2>
+  <p>
+  Mellan att vara helt frisk och att kvalificera för en diagnos finns ett mellanrum.
+  Där uppstår behovet av kontinuitet och dialog med ansvarig läkare.
+  </p>
+  `
+};
 
-  const panelTitle = document.getElementById("panelTitle");
-  const panelText  = document.getElementById("panelText");
-  const panelPills = document.getElementById("panelPills");
+function openOverlay(key){
+  document.getElementById("overlayContent").innerHTML = content[key];
+  document.getElementById("overlay").classList.add("active");
+}
 
-  function setPanel(key){
-    const c = content[key];
-    if(!c) return;
-    panelTitle.textContent = c.title;
-    panelText.textContent = c.text;
-    panelPills.innerHTML = "";
-    c.pills.forEach(t => {
-      const s = document.createElement("span");
-      s.className = "pill";
-      s.textContent = t;
-      panelPills.appendChild(s);
-    });
-  }
+function closeOverlay(){
+  document.getElementById("overlay").classList.remove("active");
+}
 
-  function onActivateBubble(el){
-    const key = el.getAttribute("data-panel");
-    if(key) setPanel(key);
-  }
-
-  document.querySelectorAll(".bubble[role='button']").forEach(b => {
-    b.addEventListener("click", () => onActivateBubble(b));
-    b.addEventListener("keydown", (e) => {
-      if(e.key === "Enter" || e.key === " ") { e.preventDefault(); onActivateBubble(b); }
-    });
-  });
-
-  // copy email
-  const copy = document.getElementById("copy-email");
-  const email = document.getElementById("email")?.textContent?.trim() || "hello@aelab.se";
-  copy?.addEventListener("click", async (e) => {
-    e.preventDefault();
-    try {
-      await navigator.clipboard.writeText(email);
-      copy.textContent = "Kopierat";
-      setTimeout(() => (copy.textContent = "Kopiera"), 1200);
-    } catch {
-      const range = document.createRange();
-      const node = document.getElementById("email");
-      if (!node) return;
-      range.selectNodeContents(node);
-      const sel = window.getSelection();
-      sel?.removeAllRanges();
-      sel?.addRange(range);
-      copy.textContent = "Markera & kopiera";
-      setTimeout(() => (copy.textContent = "Kopiera"), 1500);
-    }
-  });
 </script>
 
 </body>
