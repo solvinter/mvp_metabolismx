@@ -1,147 +1,245 @@
-<title>ælab</title>
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ælab</title>
 
 <style>
-:root {
-  --bg:#0c0f14;
-  --fg:#e6f4f3;
-  --teal:#1dd3b0;
-  --blue:#2ea8ff;
-  --amber:#ffb347;
 :root{
   --bg:#0c1117;
   --fg:#eaf6f5;
-  --light: rgba(255,255,255,0.9);
   --rim: rgba(255,255,255,0.35);
   --innerShadow: rgba(0,0,0,0.35);
   --groundShadow: rgba(0,0,0,0.55);
+  --accent: rgba(29,211,176,0.95);
 }
 
-body {
+*{ box-sizing:border-box; }
+
 body{
-margin:0;
+  margin:0;
+  min-height:100vh;
   background:
     radial-gradient(circle at 20% 30%, rgba(46,168,255,0.12), transparent 40%),
     radial-gradient(circle at 80% 40%, rgba(29,211,176,0.12), transparent 45%),
     radial-gradient(circle at 50% 85%, rgba(255,179,71,0.08), transparent 45%),
     var(--bg);
-  background: radial-gradient(circle at 30% 20%, #132330, #0c1117 60%);
-font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-color:var(--fg);
-overflow:hidden;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color:var(--fg);
+  overflow:hidden;
 }
 
-h1 {
 h1{
-position:fixed;
-top:40px;
-left:50%;
-transform:translateX(-50%);
-font-weight:400;
-letter-spacing:1px;
-  font-size:1.4rem;
-opacity:0.6;
+  position:fixed;
+  top:38px;
+  left:50%;
+  transform:translateX(-50%);
+  margin:0;
+  font-weight:400;
+  letter-spacing:0.12em;
+  font-size:1.05rem;
+  opacity:0.65;
+  user-select:none;
 }
 
-.bubble {
+.stage{
+  position:relative;
+  width:100%;
+  height:100vh;
+}
+
 .bubble{
-position:absolute;
-  width:220px;
-  height:220px;
+  position:absolute;
   width:240px;
   height:240px;
-border-radius:50%;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
   cursor:pointer;
-display:flex;
-align-items:center;
-justify-content:center;
-  cursor:pointer;
-  backdrop-filter:blur(10px);
-  background:
-    radial-gradient(circle at 30% 30%, rgba(255,255,255,0.12), transparent 55%),
-    rgba(255,255,255,0.03);
-  transition:all .4s ease;
-}
 
-.bubble:hover {
-  transform:scale(1.05);
-}
-
-.bubble span {
-  text-transform:uppercase;
-  letter-spacing:0.15em;
-  font-size:0.9rem;
-  color:var(--amber);
-}
-  /* GLASS CORE */
+  /* glass */
   background:
     radial-gradient(circle at 30% 28%, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.35) 8%, transparent 22%),
     radial-gradient(circle at 70% 75%, rgba(0,0,0,0.25), transparent 60%),
     radial-gradient(circle at 50% 50%, rgba(255,255,255,0.06), rgba(255,255,255,0.02) 60%, transparent 100%);
 
-.b1 { left:15%; top:25%; }
-.b2 { right:15%; top:20%; }
-.b3 { left:25%; bottom:15%; }
-.b4 { right:20%; bottom:20%; }
+  border: 1px solid rgba(255,255,255,0.18);
   box-shadow:
     inset -12px -18px 35px var(--innerShadow),
     inset 12px 18px 25px rgba(255,255,255,0.08),
     0 40px 60px -10px var(--groundShadow);
 
-/* Overlay */
-  border:1px solid rgba(255,255,255,0.18);
   backdrop-filter: blur(12px);
+  transition: transform .25s ease, opacity .25s ease;
+}
 
-.overlay {
+.bubble:hover{ transform:scale(1.035); }
+
+.bubble span{
+  text-transform:uppercase;
+  letter-spacing:0.18em;
+  font-size:0.92rem;
+  color:rgba(255,255,255,0.85);
+  user-select:none;
+}
+
+.b1{ left:14%; top:22%; }
+.b2{ right:14%; top:20%; }
+.b3{ left:24%; bottom:16%; }
+.b4{ right:20%; bottom:18%; }
+
+@media (max-width: 820px){
+  .bubble{ width:190px; height:190px; }
+  .b1{ left:10%; top:18%; }
+  .b2{ right:10%; top:16%; }
+  .b3{ left:12%; bottom:18%; }
+  .b4{ right:12%; bottom:20%; }
+}
+
+.overlay{
   position:fixed;
   inset:0;
-  background:rgba(12,15,20,0.92);
+  background:rgba(12,17,23,0.92);
   display:flex;
   align-items:center;
   justify-content:center;
-  text-align:center;
-  padding:40px;
+  padding:40px 22px;
   opacity:0;
   pointer-events:none;
-  transition:opacity .4s ease;
+  transition: opacity .2s ease;
 }
 
-.overlay.active {
+.overlay.active{
   opacity:1;
   pointer-events:auto;
-  transition: transform 0.25s ease;
 }
 
-.overlay-content {
-  max-width:700px;
-  line-height:1.8;
-.bubble:hover{
-  transform: scale(1.03);
+.modal{
+  width:min(760px, 100%);
+  border:1px solid rgba(255,255,255,0.14);
+  border-radius:18px;
+  background:rgba(255,255,255,0.04);
+  backdrop-filter: blur(10px);
+  padding:22px 20px 18px;
+  box-shadow: 0 30px 70px rgba(0,0,0,0.45);
 }
 
-.close {
-  position:absolute;
-  top:40px;
-  right:50px;
-  cursor:pointer;
-  opacity:0.6;
-.bubble span{
+.modal-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  margin-bottom:10px;
+}
+
+.modal-title{
+  font-weight:500;
+  letter-spacing:0.06em;
   text-transform:uppercase;
-  letter-spacing:0.15em;
   font-size:0.95rem;
-  color:rgba(255,255,255,0.85);
+  opacity:0.9;
 }
 
-.close:hover { opacity:1; }
+.close{
+  cursor:pointer;
+  border:1px solid rgba(255,255,255,0.16);
+  background:rgba(255,255,255,0.04);
+  color:var(--fg);
+  padding:8px 10px;
+  border-radius:12px;
+  opacity:0.9;
+}
 
-a {
-  color:var(--teal);
+.close:hover{ opacity:1; }
+
+.modal-body{
+  color: rgba(255,255,255,0.82);
+  line-height:1.75;
+  font-size:1.02rem;
+}
+
+.modal-body a{
+  color: var(--accent);
   text-decoration:none;
+  border-bottom:1px solid rgba(29,211,176,0.35);
 }
-/* positions */
-.b1 { left:15%; top:25%; }
-.b2 { right:15%; top:22%; }
-.b3 { left:25%; bottom:18%; }
-.b4 { right:20%; bottom:22%; }
+.modal-body a:hover{ border-bottom-color: rgba(29,211,176,0.8); }
 
+.hint{
+  margin-top:14px;
+  font-size:0.92rem;
+  opacity:0.6;
+}
 </style>
 </head>
+
+<body>
+  <h1>Ælab</h1>
+
+  <div class="stage">
+    <div class="bubble b1" data-title="Prover" data-body="Individanpassade provpaneler med fokus på metabol och kardiovaskulär risk.">
+      <span>Prover</span>
+    </div>
+
+    <div class="bubble b2" data-title="Tolkning" data-body="Läkarkonsultation med fördjupad genomgång av resultat, risk och möjliga strategier.">
+      <span>Tolkning</span>
+    </div>
+
+    <div class="bubble b3" data-title="Kontinuitet" data-body="Uppföljning över tid med en ansvarig läkare. Fokus på beslut som håller i vardagen.">
+      <span>Kontinuitet</span>
+    </div>
+
+    <div class="bubble b4" data-title="Kontakt" data-body="Skriv kort vad du vill uppnå. <a href='mailto:hello@aelab.se?subject=%C3%86lab%20%E2%80%94%20f%C3%B6rfr%C3%A5gan'>hello@aelab.se</a>">
+      <span>Kontakt</span>
+    </div>
+  </div>
+
+  <div class="overlay" id="overlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-header">
+        <div class="modal-title" id="modalTitle">—</div>
+        <button class="close" id="closeBtn" type="button">Stäng</button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+      <div class="hint">Esc för att stänga.</div>
+    </div>
+  </div>
+
+<script>
+  const overlay = document.getElementById("overlay");
+  const modalTitle = document.getElementById("modalTitle");
+  const modalBody = document.getElementById("modalBody");
+  const closeBtn = document.getElementById("closeBtn");
+
+  function openModal(title, bodyHtml){
+    modalTitle.textContent = title || "—";
+    modalBody.innerHTML = bodyHtml || "";
+    overlay.classList.add("active");
+    overlay.setAttribute("aria-hidden", "false");
+  }
+
+  function closeModal(){
+    overlay.classList.remove("active");
+    overlay.setAttribute("aria-hidden", "true");
+  }
+
+  document.querySelectorAll(".bubble").forEach(b => {
+    b.addEventListener("click", () => {
+      openModal(b.dataset.title, b.dataset.body);
+    });
+  });
+
+  closeBtn.addEventListener("click", closeModal);
+
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) closeModal();
+  });
+
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeModal();
+  });
+</script>
+</body>
+</html>
