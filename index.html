@@ -1,3 +1,44 @@
+Skip to content
+solvinter
+mvp_metabolismx
+Repository navigation
+Code
+Issues
+Pull requests
+Actions
+Projects
+Security
+Insights
+Settings
+Commit 80b572c
+solvinter
+solvinter
+authored
+10 hours ago
+·
+·
+Verified
+Refactor HTML structure and update styles
+main
+1 parent 
+0f1156f
+ commit 
+80b572c
+File tree
+Filter files…
+index.html
+1 file changed
++158
+-359
+lines changed
+Search within code
+ 
+‎index.html‎
++158
+-359
+Lines changed: 158 additions & 359 deletions
+Original file line number	Diff line number	Diff line change
+@@ -1,382 +1,181 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
@@ -28,7 +69,6 @@
   --blue:#2ea8ff;
   --amber:#ffb347;
 }
-
 body {
   margin:0;
   background:
@@ -40,7 +80,6 @@ body {
   color:var(--fg);
   overflow:hidden;
 }
-
 h1 {
   position:fixed;
   top:40px;
@@ -51,7 +90,6 @@ h1 {
   font-size:1.4rem;
   opacity:0.6;
 }
-
 .bubble {
   position:absolute;
   width:220px;
@@ -67,25 +105,20 @@ h1 {
     rgba(255,255,255,0.03);
   transition:all .4s ease;
 }
-
 .bubble:hover {
   transform:scale(1.05);
 }
-
 .bubble span {
   text-transform:uppercase;
   letter-spacing:0.15em;
   font-size:0.9rem;
   color:var(--amber);
 }
-
 .b1 { left:15%; top:25%; }
 .b2 { right:15%; top:20%; }
 .b3 { left:25%; bottom:15%; }
 .b4 { right:20%; bottom:20%; }
-
 /* Overlay */
-
 .overlay {
   position:fixed;
   inset:0;
@@ -99,17 +132,14 @@ h1 {
   pointer-events:none;
   transition:opacity .4s ease;
 }
-
 .overlay.active {
   opacity:1;
   pointer-events:auto;
 }
-
 .overlay-content {
   max-width:700px;
   line-height:1.8;
 }
-
 .close {
   position:absolute;
   top:40px;
@@ -117,9 +147,7 @@ h1 {
   cursor:pointer;
   opacity:0.6;
 }
-
 .close:hover { opacity:1; }
-
 a {
   color:var(--teal);
   text-decoration:none;
@@ -137,13 +165,11 @@ a {
     line-height:1.7;
     overflow-x:hidden;
   }
-
   .container{
     max-width:980px;
     margin:70px auto 90px;
     padding:0 22px;
   }
-
   header{
     display:flex;
     align-items:flex-end;
@@ -151,40 +177,34 @@ a {
     gap:18px;
     margin-bottom:34px;
   }
-
   h1{
     margin:0;
     font-weight:420;
     letter-spacing:0.4px;
     font-size:2.1rem;
   }
-
   .tagline{
     margin:0;
     color:var(--muted);
     font-size:1rem;
   }
-
   .mini{
     font-size:0.92rem;
     color:rgba(255,255,255,0.62);
     white-space:nowrap;
   }
-
   .mini a{
     color:rgba(255,255,255,0.72);
     text-decoration:none;
     border-bottom:1px solid rgba(255,255,255,0.22);
   }
   .mini a:hover{ border-bottom-color:rgba(255,255,255,0.65); }
-
   .stage{
     display:grid;
     grid-template-columns: 1.1fr 0.9fr;
     gap:34px;
     align-items:start;
   }
-
   /* Bubble field */
   .bubbleField{
     min-height:520px;
@@ -194,7 +214,6 @@ a {
     position:relative;
     overflow:hidden;
   }
-
   .bubbleField::before{
     content:"";
     position:absolute; inset:-40px;
@@ -205,7 +224,6 @@ a {
     filter: blur(10px);
     pointer-events:none;
   }
-
   .bubble{
     width:220px; height:220px;
     border-radius:50%;
@@ -228,7 +246,6 @@ a {
     cursor:pointer;
     user-select:none;
   }
-
   .bubble:hover{
     transform: translateY(-4px) scale(1.02);
     border-color: rgba(255,255,255,0.34);
@@ -236,11 +253,9 @@ a {
       0 22px 60px rgba(0,0,0,0.38),
       0 0 60px rgba(29,211,176,0.14);
   }
-
   .bubble:active{
     transform: translateY(-1px) scale(0.99);
   }
-
   .bubble .label{
     font-weight:520;
     letter-spacing:0.08em;
@@ -248,13 +263,11 @@ a {
     font-size:0.95rem;
     opacity:0.92;
   }
-
   /* bubble positions (desktop) */
   .b1{ left:70px;  top:70px; }
   .b2{ right:80px; top:90px; }
   .b3{ left:150px; top:280px; }
   .b4{ right:120px; top:310px; }
-
   /* Info panel */
   .panel{
     border:1px solid var(--hair);
@@ -262,26 +275,22 @@ a {
     background:rgba(255,255,255,0.02);
     padding:18px 18px 16px;
   }
-
   .panel h2{
     margin:2px 0 10px;
     font-size:1.15rem;
     font-weight:520;
     letter-spacing:0.2px;
   }
-
   .panel p{
     margin:0 0 14px;
     color:var(--muted);
     font-size:1.02rem;
   }
-
   .pillrow{
     display:flex; flex-wrap:wrap;
     gap:8px;
     margin-top:10px;
   }
-
   .pill{
     display:inline-block;
     padding:7px 10px;
@@ -291,7 +300,6 @@ a {
     font-size:0.92rem;
     color:rgba(255,255,255,0.78);
   }
-
   .cta{
     margin-top:14px;
     display:flex;
@@ -299,7 +307,6 @@ a {
     flex-wrap:wrap;
     align-items:center;
   }
-
   .btn{
     display:inline-block;
     padding:10px 14px;
@@ -313,26 +320,22 @@ a {
     border-color: rgba(255,255,255,0.65);
     background: rgba(255,255,255,0.07);
   }
-
   .emailline{
     margin-top:10px;
     font-size:0.95rem;
     opacity:0.85;
   }
-
   a.inline{
     color:rgba(255,255,255,0.86);
     text-decoration:none;
     border-bottom:1px solid rgba(255,255,255,0.22);
   }
   a.inline:hover{ border-bottom-color:rgba(255,255,255,0.65); }
-
   .footer{
     margin-top:28px;
     opacity:0.55;
     font-size:0.9rem;
   }
-
   /* Mobile */
   @media (max-width: 920px){
     .stage{ grid-template-columns:1fr; }
@@ -342,7 +345,6 @@ a {
     .b3{ left:30px; top:300px; }
     .b4{ right:30px; top:340px; }
   }
-
   @media (max-width: 520px){
     header{ flex-direction:column; align-items:flex-start; }
     .bubble{ width:190px; height:190px; }
@@ -419,12 +421,11 @@ a {
 <a href="https://metabolismx.se" target="_blank">
   <div class="bubble b4">
     <span>MetabolismX</span>
-</div>
+  </div>
 </a>
 
 <script>
   document.getElementById("year").textContent = new Date().getFullYear();
-
   const content = {
     hur: {
       title: "Hur",
@@ -453,7 +454,6 @@ a {
   const panelTitle = document.getElementById("panelTitle");
   const panelText  = document.getElementById("panelText");
   const panelPills = document.getElementById("panelPills");
-
   function setPanel(key){
     const c = content[key];
     if(!c) return;
@@ -467,7 +467,6 @@ a {
       panelPills.appendChild(s);
     });
   }
-
   function onActivateBubble(el){
     const key = el.getAttribute("data-panel");
     if(key) setPanel(key);
@@ -504,12 +503,10 @@ const content = {
   </p>
   `
 };
-
 function openOverlay(key){
   document.getElementById("overlayContent").innerHTML = content[key];
   document.getElementById("overlay").classList.add("active");
 }
-
 function closeOverlay(){
   document.getElementById("overlay").classList.remove("active");
 }
@@ -538,3 +535,11 @@ function closeOverlay(){
 </script>
 
 </body>
+0 commit comments
+Comments
+0
+ (0)
+Comment
+You're not receiving notifications from this thread.
+
+There are no files selected for viewing
