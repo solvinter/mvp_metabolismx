@@ -56,10 +56,25 @@ h1{
 
   /* glass body */
   background:
-    radial-gradient(circle at 32% 28%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.4) 6%, transparent 18%),
-    radial-gradient(circle at 68% 72%, rgba(0,0,0,0.3), transparent 65%),
-    radial-gradient(circle at 50% 50%, rgba(255,255,255,0.05), rgba(255,255,255,0.02) 60%, transparent 100%);
-
+  /* bred, mjuk highlight (mindre vit i centrum, mer utsmetad) */
+  radial-gradient(circle at 30% 26%,
+    rgba(255,255,255,0.22) 0%,
+    rgba(255,255,255,0.16) 10%,
+    rgba(255,255,255,0.08) 24%,
+    transparent 48%),
+  /* tunn “rim sheen” som ger perifer ljus-känsla */
+  radial-gradient(circle at 18% 18%,
+    rgba(255,255,255,0.10) 0%,
+    transparent 55%),
+  /* mörkare djup på motsatt sida */
+  radial-gradient(circle at 70% 72%,
+    rgba(0,0,0,0.30) 0%,
+    transparent 66%),
+  /* subtilt inre glas */
+  radial-gradient(circle at 50% 50%,
+    rgba(255,255,255,0.05) 0%,
+    rgba(255,255,255,0.02) 62%,
+    transparent 100%);
   border:1px solid rgba(255,255,255,0.18);
 
   box-shadow:
