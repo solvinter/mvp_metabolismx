@@ -56,23 +56,32 @@ h1{
 
   /* glass body */
   background:
-  /* bred, mjuk highlight (mindre vit i centrum, mer utsmetad) */
-  radial-gradient(circle at 30% 26%,
-    rgba(255,255,255,0.22) 0%,
-    rgba(255,255,255,0.16) 10%,
-    rgba(255,255,255,0.08) 24%,
-    transparent 48%),
-  /* tunn “rim sheen” som ger perifer ljus-känsla */
-  radial-gradient(circle at 18% 18%,
-    rgba(255,255,255,0.10) 0%,
-    transparent 55%),
-  /* mörkare djup på motsatt sida */
-  radial-gradient(circle at 70% 72%,
+  /* BRED SHEEN: ger 3D-känsla utan vit prick */
+  radial-gradient(circle at 34% 28%,
+    rgba(255,255,255,0.40) 0%,
+    rgba(255,255,255,0.22) 14%,
+    rgba(255,255,255,0.10) 32%,
+    transparent 58%),
+
+  /* RIM HIGHLIGHT: ljus mot periferin */
+  radial-gradient(circle at 50% 45%,
+    transparent 58%,
+    rgba(255,255,255,0.09) 72%,
+    transparent 86%),
+
+  /* LITEN, SVAG KICK: ersätter hotspot men mycket mild */
+  radial-gradient(circle at 22% 20%,
+    rgba(255,255,255,0.14) 0%,
+    transparent 45%),
+
+  /* DJUP: mörkare sida */
+  radial-gradient(circle at 72% 74%,
     rgba(0,0,0,0.30) 0%,
     transparent 66%),
-  /* subtilt inre glas */
-  radial-gradient(circle at 50% 50%,
-    rgba(255,255,255,0.05) 0%,
+
+  /* GLASVOLYM */
+  radial-gradient(circle at 50% 52%,
+    rgba(255,255,255,0.06) 0%,
     rgba(255,255,255,0.02) 62%,
     transparent 100%);
   border:1px solid rgba(255,255,255,0.18);
