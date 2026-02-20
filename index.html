@@ -1,4 +1,4 @@
-
+<title>ælab</title>
 <!DOCTYPE html>
 <html lang="sv">
 <head>
@@ -7,31 +7,53 @@
 <title>Ælab</title>
 
 <style>
+:root {
+  --bg:#0c0f14;
+  --fg:#e6f4f3;
+  --teal:#1dd3b0;
+  --blue:#2ea8ff;
+  --amber:#ffb347;
 :root{
-  --bg:#0c1117;
-  --fg:#eaf6f5;
-  --rim: rgba(255,255,255,0.35);
-  --innerShadow: rgba(0,0,0,0.35);
-  --groundShadow: rgba(0,0,0,0.55);
+--bg:#0c1117;
+--fg:#eaf6f5;
+  --light: rgba(255,255,255,0.9);
+--rim: rgba(255,255,255,0.35);
+--innerShadow: rgba(0,0,0,0.35);
+--groundShadow: rgba(0,0,0,0.55);
   --accent: rgba(29,211,176,0.95);
 }
 
+body {
 *{ box-sizing:border-box; }
 
 body{
+margin:0;
   margin:0;
   min-height:100vh;
-  background:
-    radial-gradient(circle at 20% 30%, rgba(46,168,255,0.12), transparent 40%),
-    radial-gradient(circle at 80% 40%, rgba(29,211,176,0.12), transparent 45%),
-    radial-gradient(circle at 50% 85%, rgba(255,179,71,0.08), transparent 45%),
-    var(--bg);
+background:
+radial-gradient(circle at 20% 30%, rgba(46,168,255,0.12), transparent 40%),
+radial-gradient(circle at 80% 40%, rgba(29,211,176,0.12), transparent 45%),
+radial-gradient(circle at 50% 85%, rgba(255,179,71,0.08), transparent 45%),
+var(--bg);
+  background: radial-gradient(circle at 30% 20%, #132330, #0c1117 60%);
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+color:var(--fg);
+overflow:hidden;
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
   color:var(--fg);
   overflow:hidden;
 }
 
+h1 {
 h1{
+position:fixed;
+top:40px;
+left:50%;
+transform:translateX(-50%);
+font-weight:400;
+letter-spacing:1px;
+  font-size:1.4rem;
+opacity:0.6;
   position:fixed;
   top:38px;
   left:50%;
@@ -50,32 +72,65 @@ h1{
   height:100vh;
 }
 
+.bubble {
 .bubble{
+position:absolute;
+  width:220px;
+  height:220px;
   position:absolute;
-  width:240px;
-  height:240px;
+width:240px;
+height:240px;
+border-radius:50%;
+  cursor:pointer;
+display:flex;
+align-items:center;
+justify-content:center;
   border-radius:50%;
   display:flex;
   align-items:center;
   justify-content:center;
-  cursor:pointer;
-
-  /* glass */
+cursor:pointer;
+  backdrop-filter:blur(10px);
   background:
-    radial-gradient(circle at 30% 28%, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.35) 8%, transparent 22%),
-    radial-gradient(circle at 70% 75%, rgba(0,0,0,0.25), transparent 60%),
-    radial-gradient(circle at 50% 50%, rgba(255,255,255,0.06), rgba(255,255,255,0.02) 60%, transparent 100%);
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,0.12), transparent 55%),
+    rgba(255,255,255,0.03);
+  transition:all .4s ease;
+}
 
+.bubble:hover {
+  transform:scale(1.05);
+}
+
+.bubble span {
+  text-transform:uppercase;
+  letter-spacing:0.15em;
+  font-size:0.9rem;
+  color:var(--amber);
+}
+  /* GLASS CORE */
+  /* glass */
+background:
+radial-gradient(circle at 30% 28%, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.35) 8%, transparent 22%),
+radial-gradient(circle at 70% 75%, rgba(0,0,0,0.25), transparent 60%),
+radial-gradient(circle at 50% 50%, rgba(255,255,255,0.06), rgba(255,255,255,0.02) 60%, transparent 100%);
+
+.b1 { left:15%; top:25%; }
+.b2 { right:15%; top:20%; }
+.b3 { left:25%; bottom:15%; }
+.b4 { right:20%; bottom:20%; }
   border: 1px solid rgba(255,255,255,0.18);
-  box-shadow:
-    inset -12px -18px 35px var(--innerShadow),
-    inset 12px 18px 25px rgba(255,255,255,0.08),
-    0 40px 60px -10px var(--groundShadow);
+box-shadow:
+inset -12px -18px 35px var(--innerShadow),
+inset 12px 18px 25px rgba(255,255,255,0.08),
+0 40px 60px -10px var(--groundShadow);
 
-  backdrop-filter: blur(12px);
+/* Overlay */
+  border:1px solid rgba(255,255,255,0.18);
+backdrop-filter: blur(12px);
   transition: transform .25s ease, opacity .25s ease;
 }
 
+.overlay {
 .bubble:hover{ transform:scale(1.035); }
 
 .bubble span{
@@ -100,23 +155,34 @@ h1{
 }
 
 .overlay{
-  position:fixed;
-  inset:0;
+position:fixed;
+inset:0;
+  background:rgba(12,15,20,0.92);
   background:rgba(12,17,23,0.92);
-  display:flex;
-  align-items:center;
-  justify-content:center;
+display:flex;
+align-items:center;
+justify-content:center;
+  text-align:center;
+  padding:40px;
   padding:40px 22px;
-  opacity:0;
-  pointer-events:none;
+opacity:0;
+pointer-events:none;
+  transition:opacity .4s ease;
   transition: opacity .2s ease;
 }
 
+.overlay.active {
 .overlay.active{
-  opacity:1;
-  pointer-events:auto;
+opacity:1;
+pointer-events:auto;
+  transition: transform 0.25s ease;
 }
 
+.overlay-content {
+  max-width:700px;
+  line-height:1.8;
+.bubble:hover{
+  transform: scale(1.03);
 .modal{
   width:min(760px, 100%);
   border:1px solid rgba(255,255,255,0.14);
@@ -127,6 +193,13 @@ h1{
   box-shadow: 0 30px 70px rgba(0,0,0,0.45);
 }
 
+.close {
+  position:absolute;
+  top:40px;
+  right:50px;
+  cursor:pointer;
+  opacity:0.6;
+.bubble span{
 .modal-header{
   display:flex;
   align-items:center;
@@ -138,11 +211,14 @@ h1{
 .modal-title{
   font-weight:500;
   letter-spacing:0.06em;
-  text-transform:uppercase;
-  font-size:0.95rem;
+text-transform:uppercase;
+  letter-spacing:0.15em;
+font-size:0.95rem;
+  color:rgba(255,255,255,0.85);
   opacity:0.9;
 }
 
+.close:hover { opacity:1; }
 .close{
   cursor:pointer;
   border:1px solid rgba(255,255,255,0.16);
@@ -153,6 +229,8 @@ h1{
   opacity:0.9;
 }
 
+a {
+  color:var(--teal);
 .close:hover{ opacity:1; }
 
 .modal-body{
@@ -163,9 +241,14 @@ h1{
 
 .modal-body a{
   color: var(--accent);
-  text-decoration:none;
+text-decoration:none;
   border-bottom:1px solid rgba(29,211,176,0.35);
 }
+/* positions */
+.b1 { left:15%; top:25%; }
+.b2 { right:15%; top:22%; }
+.b3 { left:25%; bottom:18%; }
+.b4 { right:20%; bottom:22%; }
 .modal-body a:hover{ border-bottom-color: rgba(29,211,176,0.8); }
 
 .hint{
